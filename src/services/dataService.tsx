@@ -1,5 +1,3 @@
-import { SECTOR } from "../context/SectorContext";
-
 
 const processData = (data: any) => {
     // const result = Object.keys(data.intraday).reduce((acc: any[], current: string) => {
