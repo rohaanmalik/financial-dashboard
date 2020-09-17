@@ -30,7 +30,7 @@ export const StockPage = () => {
                     <div className={"container my-3"}>
                         <NavigationRow className="row justify-content-center">
                             <AddRemoveSymbol className={"col-6 col-lg-4 mb-3 mb-lg-0 text-center text-lg-left"} />
-                            <Navigation className={classNames(styles['navigation'], "col-12 col-lg-4 flex-grow-1 mb-3 mb-lg-0 text-center")} />
+                            {/* <Navigation className={classNames(styles['navigation'], "col-12 col-lg-4 flex-grow-1 mb-3 mb-lg-0 text-center")} /> */}
                             <ChangeSector className="col-6 col-lg-4 text-right" />
                         </NavigationRow>
                     </div>
