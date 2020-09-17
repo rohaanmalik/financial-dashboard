@@ -6,8 +6,6 @@ import { classNames } from '@progress/kendo-react-common';
 import { DropDownList, ListItemProps } from '@progress/kendo-react-dropdowns';
 
 import { ReactComponent as areaIcon } from '../../icons/area.svg';
-import { ReactComponent as lineIcon } from '../../icons/line.svg';
-import { ReactComponent as candleIcon } from '../../icons/candle.svg';
 import {
     StockChart,
     ChartSeries,
@@ -41,8 +39,6 @@ const DEFAULT_INTERVAL = {
 }
 
 enum CHART_TYPES {
-    candle,
-    line,
     area
 }
 
@@ -94,8 +90,6 @@ const customIntervalValueRender = (el: any, value: any) => (
 
 const ChartTypePicker = (props: any) => {
     const data = React.useMemo(() => [
-        { name: 'Candle', icon: candleIcon, type: CHART_TYPES.candle },
-        { name: 'Line', icon: lineIcon, type: CHART_TYPES.line },
         { name: 'Area', icon: areaIcon, type: CHART_TYPES.area }
     ], []);
 
@@ -123,13 +117,7 @@ const ChartTypePicker = (props: any) => {
 
 const ChartIntervalPicker = (props: any) => {
     const data = React.useMemo(() => [
-        { name: '5M', interval: { unit: 'minutes', step: 5, duration: MS_PER_DAY / 24 / 12 } },
-        { name: '15M', interval: { unit: 'minutes', step: 15, duration: MS_PER_DAY / 96 } },
-        { name: '30M', interval: { unit: 'minutes', step: 30, duration: MS_PER_DAY / 48 } },
-        { name: '1H', interval: { unit: 'hours', step: 1, duration: MS_PER_DAY / 24 } },
-        { name: '4H', interval: { unit: 'hours', step: 4, duration: MS_PER_DAY / 6 } },
         { name: '1D', interval: { unit: 'days', step: 1, duration: MS_PER_DAY } },
-        { name: '1W', interval: { unit: 'weeks', step: 1, duration: MS_PER_DAY * 7 } },
     ], []);
 
     const handleChange = React.useCallback(
@@ -193,6 +181,8 @@ const options = [
     { name: '4D', duration: MS_PER_DAY * 4 },
     { name: '1W', duration: MS_PER_DAY * 7 },
 ]
+
+
 const ChartPredefinedRange = (props: any) => {
     const [selected, setSelected] = React.useState<string | null>('4D');
 
@@ -246,83 +236,6 @@ const ChartPredefinedRange = (props: any) => {
         </div>)
 }
 
-export const Stock = () => {
-    const { symbol = "SNAP" } = useParams();
-    const [data, setData] = React.useState<any>([]);
-    const [range, setRange] = React.useState(DEFAULT_RANGE);
-    const [interval, setInterval] = React.useState(DEFAULT_INTERVAL);
-    const [type, setType] = React.useState<CHART_TYPES>(CHART_TYPES.candle);
-
-    const handleRangeChange = React.useMemo(
-        () => (event: any) => {
-            setRange(event.value);
-        },
-        [setRange])
-
-    const handleTypeChange = (event: any) => {
-        setType(event.value);
-    }
-
-    const handleIntervalChange = (event: any) => {
-        setInterval(event.value);
-    }
-
-    const fetchData = React.useCallback(async () => {
-        const newData = await dataService.getSymbol(symbol);
-        setData(newData)
-    }, [symbol])
-
-    React.useEffect(() => { fetchData() }, [fetchData]);
-
-
-    const chartComp: React.ReactNode = React.useMemo(() => {
-        switch (type) {
-            case CHART_TYPES.candle:
-                return <CandleChart data={data} interval={interval} range={range} onRangeChange={handleRangeChange} />;
-            case CHART_TYPES.line:
-                return <LineChart data={data} interval={interval} range={range} />;
-            case CHART_TYPES.area:
-                return <AreaChart data={data} interval={interval} range={range} />;
-            default:
-                return <LineChart data={data} interval={interval} range={range} />;
-        }
-    }, [type, interval, data, range, handleRangeChange]);
-
-    return (
-        <>
-            <div className="row">
-                <div className="col-12 col-lg-4 mb-3 mt-lg-0 text-center text-lg-left">
-                    <ChartRangePicker
-                        value={range}
-                        onChange={handleRangeChange}
-                    />
-                </div>
-                <div className="col-12 col-lg-4 mb-3 text-center m-lg-auto">
-                    <ChartPredefinedRange
-                        value={range}
-                        onChange={handleRangeChange}
-                        last={(data && data.length) ? new Date(data[data.length - 1].timestamp) : null}
-                    />
-                </div>
-                <div className="col-12 col-lg-4 text-center text-lg-right">
-                    <ChartIntervalPicker
-                        value={interval}
-                        onChange={handleIntervalChange}
-                    />
-                    <ChartTypePicker
-                        value={type}
-                        onChange={handleTypeChange}
-                    />
-                </div>
-            </div>
-            <div className="row mt-3">
-                <div className="col" >
-                    {chartComp}
-                </div>
-            </div>
-        </>
-    )
-}
 
 const AreaChart = (props: any) => {
     const intl = useInternationalization();
@@ -394,239 +307,76 @@ const AreaChart = (props: any) => {
     </Chart>)
 }
 
-const LineChart = (props: any) => {
-    const intl = useInternationalization();
+export const Stock = () => {
+    const { symbol = "SNAP" } = useParams();
+    const [data, setData] = React.useState<any>([]);
+    const [range, setRange] = React.useState(DEFAULT_RANGE);
+    const [interval, setInterval] = React.useState(DEFAULT_INTERVAL);
+    const [type, setType] = React.useState<CHART_TYPES>(CHART_TYPES.area);
 
-    const plotBands = React.useMemo(
-        () => {
-            let result = [];
-            let index = 0;
-            if (!props.range.start || !props.range.end) { return; }
-            const diff = (props.range.end.getTime() - props.range.start.getTime())
-            const categories = diff / props.interval.duration;
-            const step = categories / 12 < 1 ? 1 : categories / 12;
+    const handleRangeChange = React.useMemo(
+        () => (event: any) => {
+            setRange(event.value);
+        },
+        [setRange])
 
-            for (let i = 0; i < categories; i += step) {
-                if (index++ % 2 === 0) {
-                    result.push({
-                        color: '#000',
-                        opacity: 0.03,
-                        from: i,
-                        to: i + step
-                    })
-                }
-            }
-
-            return result;
-        }, [props.range, props.interval.duration]);
-
-    return (<Chart
-        renderAs="canvas"
-        zoomable={false}
-    // transitions={false}
-    >
-        <ChartSeries>
-            <ChartSeriesItem
-                data={props.data}
-                type="line"
-                field="close"
-                color="#007BFF"
-                style="smooth"
-                categoryAxis="close"
-                axis="valueCloseAxis"
-                categoryField="date"
-                markers={{ visible: true, border: { color: '#007BFF' } }}
-                tooltip={{ background: "#007BFF", visible: true, format: "{0:c}" }}
-            />
-            <ChartSeriesItem
-                data={props.data}
-                type="column"
-                field={"change"}
-                axis={"valueChangeAxis"}
-                categoryAxis="change"
-                colorField="color"
-                border={{ color: 'transparent' }}
-                categoryField="date"
-                gap={0.75}
-                tooltip={{ format: "{0:p2}" }}
-            />
-        </ChartSeries>
-        <ChartValueAxis>
-            <ChartValueAxisItem
-                name="valueCloseAxis"
-                labels={{ content: ({ value }) => intl.formatNumber(value, 'c') }}
-            />
-            <ChartValueAxisItem
-                name="valueChangeAxis"
-                min={0}
-                max={0.4}
-                visible={false}
-            />
-        </ChartValueAxis>
-        <ChartCategoryAxis>
-            <ChartCategoryAxisItem
-                type="date"
-                baseUnit={props.interval.unit}
-                baseUnitStep={props.interval.step * 4}
-                name="close"
-                labels={{
-                    content: (e) => e.value.getDate() === 1
-                        ? intl.formatDate(e.value, "MMM")
-                        : e.value.getHours() === 0
-                            ? e.value.getDate()
-                            : ''
-                }}
-                min={props.range.start}
-                max={props.range.end}
-            />
-            <ChartCategoryAxisItem
-                type="date"
-                name="change"
-                line={{ visible: false }}
-                crosshair={{ visible: true, tooltip: { visible: true, format: '{0:t}' } }}
-                majorTicks={{ visible: false }}
-                minorTicks={{ visible: false }}
-                plotBands={plotBands}
-                baseUnit={props.interval.unit}
-                baseUnitStep={props.interval.step}
-                min={props.range.start}
-                max={props.range.end}
-                labels={{ visible: false }}
-            />
-        </ChartCategoryAxis>
-    </Chart>)
-}
-
-const CandleChart = (props: any) => {
-    const intl = useInternationalization();
-
-    const handleSelectEnd = (args: any) => {
-        props.onRangeChange.call(undefined, {
-            value: {
-                start: args.from,
-                end: args.to
-            }
-        });
+    const handleTypeChange = (event: any) => {
+        setType(event.value);
     }
 
-    const customAggregate = React.useMemo(
-        () => ({
-            open: (val: any[]) => val[0],
-            close: (val: any[]) => val[val.length - 1],
-            high: (val: any[]) => Math.max(...val),
-            low: (val: any[]) => Math.min(...val),
-            volume: (val: any[]) => val[0]
-        }),
-        [])
+    const handleIntervalChange = (event: any) => {
+        setInterval(event.value);
+    }
 
-    const plotBands = React.useMemo(
-        () => {
-            let result = [];
-            let index = 0;
-            if (!props.range.start || !props.range.end) { return; }
-            const diff = (props.range.end.getTime() - props.range.start.getTime())
-            const categories = diff / props.interval.duration;
-            const step = categories / 12 < 1 ? 1 : categories / 12;
+    const fetchData = React.useCallback(async () => {
+        const newData = await dataService.getSymbol(symbol);
+        setData(newData)
+    }, [symbol])
 
-            for (let i = 0; i < categories; i += step) {
-                if (index++ % 2 === 0) {
-                    result.push({
-                        color: '#000',
-                        opacity: 0.03,
-                        from: i,
-                        to: i + step
-                    })
-                }
-            }
+    React.useEffect(() => { fetchData() }, [fetchData]);
 
-            return result;
-        }, [props.range, props.interval.duration]);
+
+    const chartComp: React.ReactNode = React.useMemo(() => {
+        switch (type) {
+            case CHART_TYPES.area:
+                return <AreaChart data={data} interval={interval} range={range} />;
+            default:
+                return <AreaChart data={data} interval={interval} range={range} />;
+        }
+    }, [type, interval, data, range, handleRangeChange]);
 
     return (
-        <StockChart
-            renderAs="canvas"
-            zoomable={false}
-            // transitions={false}
-            onSelectEnd={handleSelectEnd}
-            onZoomStart={(e) => e.preventDefault()}
-        >
-            <ChartSeries >
-                <ChartSeriesItem
-                    data={props.data}
-                    colorField="color"
-                    downColorField="color"
-                    type="candlestick"
-                    openField="open"
-                    closeField="close"
-                    lowField="low"
-                    highField="high"
-                    categoryField="date"
-                    aggregate={customAggregate}
-                    gap={0.75}
-                    border={{ color: 'transparent' }}
-                    tooltip={{
-                        format: `
-                        <table>
-                        <tbody>
-                        <tr><th>{4:t}</th><th>{4:d/M}</th></tr> 
-                        <tr><td>Open:</td> <td>{0:c2}</td></tr>
-                        <tr><td>High:</td><td>{1:c2}</td></tr>
-                        <tr><td>Low:</td><td>{2:c2}</td></tr>
-                        <tr><td>Close:</td><td>{3:c2}</td></tr>
-                        </tbody>
-                        </table>
-                    `}}
-                />
-                <ChartSeriesItem
-                    data={props.data}
-                    type="column"
-                    field={"change"}
-                    axis={"valueChangeAxis"}
-                    colorField="color"
-                    border={{ color: 'transparent' }}
-                    categoryField="date"
-                    gap={0.75}
-                    aggregate="avg"
-                    tooltip={{ format: "{0:p2}" }}
-                />
-            </ChartSeries>
-            <ChartValueAxis>
-                <ChartValueAxisItem
-                    crosshair={{ visible: true }}
-                    labels={{ content: ({ value }) => intl.formatNumber(value, 'c') }}
-                />
-                <ChartValueAxisItem
-                    name="valueChangeAxis"
-                    min={0}
-                    max={0.2}
-                    visible={false}
-                />
-            </ChartValueAxis>
-            <ChartCategoryAxis>
-                <ChartCategoryAxisItem
-                    crosshair={{ visible: true }}
-                    baseUnit={props.interval.unit}
-                    baseUnitStep={props.interval.step}
-                    plotBands={plotBands}
-                    labels={{ visible: false }}
-                />
-            </ChartCategoryAxis>
-            <ChartNavigator >
-                <ChartNavigatorSelect mousewheel={false} from={props.range.start} to={props.range.end} />
-                <ChartNavigatorSeries>
-                    <ChartNavigatorSeriesItem
-                        data={props.data}
-                        type="area"
-                        field="close"
-                        categoryField="date"
-                        tooltip={{ visible: false }}
-                        highlight={{ visible: false }}
+        <>
+            <div className="row">
+                <div className="col-12 col-lg-4 mb-3 mt-lg-0 text-center text-lg-left">
+                    <ChartRangePicker
+                        value={range}
+                        onChange={handleRangeChange}
                     />
-                </ChartNavigatorSeries>
-                <ChartNavigatorCategoryAxis
-                    baseUnit={"days"}
-                    labels={{ content: (e) => e.value.getDate() === 1 ? intl.formatDate(e.value, "MMM") : e.value.getDate() }}
-                />
-            </ChartNavigator>
-        </StockChart>)
+                </div>
+                <div className="col-12 col-lg-4 mb-3 text-center m-lg-auto">
+                    <ChartPredefinedRange
+                        value={range}
+                        onChange={handleRangeChange}
+                        last={(data && data.length) ? new Date(data[data.length - 1].timestamp) : null}
+                    />
+                </div>
+                <div className="col-12 col-lg-4 text-center text-lg-right">
+                    <ChartIntervalPicker
+                        value={interval}
+                        onChange={handleIntervalChange}
+                    />
+                    <ChartTypePicker
+                        value={type}
+                        onChange={handleTypeChange}
+                    />
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col" >
+                    {chartComp}
+                </div>
+            </div>
+        </>
+    )
 }
