@@ -28,6 +28,9 @@ const processData = (data: any) => {
 }
 
 export const dataService = {
+    getSymbolData : async (symbol : String) => {
+        return await fetch("http://127.0.0.1:5000/v1/price/"+symbol).then((response) => response.json()).then((data) => console.log('This is your data', data));
+    }
     // getSectorSymbol: async (sector: SECTOR) => {
     //     const sectorMap = {
     //         [SECTOR.SP500]: 'health-symbols',

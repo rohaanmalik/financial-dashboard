@@ -54,7 +54,7 @@ export const AddRemoveSymbol = (props: AddRemoveSymbolProps) => {
 
     const fetchData = React.useCallback(
         async () => {
-            
+            console.log(dataService.getSymbolData("TSLA"))
         },
         [sector]
     );
