@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
-import { dataService } from '../../services';
+// import { dataService } from '../../services
 import { Chart, ChartSeries, ChartSeriesItem, ChartTooltip, ChartLegend } from '@progress/kendo-react-charts';
 import useImage from '../../images/user.jpg';
 import styles from './user.module.scss';
@@ -11,12 +11,12 @@ export const UserProfile = () => {
     const history = useHistory();
     const [data, setData] = React.useState<any[]>([]);
     const fetchData = React.useCallback(async () => {
-        const newData = await dataService.getAllSymbols();
-        const parsedData = newData.map((item: any) => {
-            item.proportion = Math.random() / 10;
-            return item;
-        })
-        setData(parsedData)
+        // const newData = await dataService.getAllSymbols();
+        // const parsedData = newData.map((item: any) => {
+        //     item.proportion = Math.random() / 10;
+        //     return item;
+        // })
+        // setData(parsedData)
     }, [])
 
     const handleBackClick = React.useCallback(
