@@ -5,6 +5,7 @@ import { MS_PER_DAY } from '@progress/kendo-date-math';
 import { classNames } from '@progress/kendo-react-common';
 import { DropDownList, ListItemProps } from '@progress/kendo-react-dropdowns';
 // import { dataService } from '../../services' 
+
 import { ReactComponent as areaIcon } from '../../icons/area.svg';
 import {
     StockChart,
@@ -344,6 +345,22 @@ export const Stock = () => {
         }
     }, [type, interval, data, range, handleRangeChange]);
 
+
+    class StockPriceComponent extends React.Component{
+        constructor(props) {
+            super(props)
+            this.state = {
+                stocks: []
+            }
+        }
+
+        componentDidMount() {
+            Stock.().then((response) => {
+                this.setState({ stocks: response.data })
+            });
+        }
+
+    }
     return (
         <>
             <div className="row">
@@ -378,4 +395,7 @@ export const Stock = () => {
             </div>
         </>
     )
+
+
+
 }

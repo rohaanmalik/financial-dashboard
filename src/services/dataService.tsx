@@ -31,6 +31,9 @@ const processData = (data: any) => {
 }
 
 export const dataService = {
+
+
+
     // getSectorSymbol: async (sector: SECTOR) => {
     //     const sectorMap = {
     //         [SECTOR.SP500]: 'health-symbols',
@@ -40,6 +43,9 @@ export const dataService = {
     //     const symbols = await resp.json();
     //     return symbols.data;
     // },
+
+
+
     // getAllSymbols: async () => {
     //     const health = await fetch(`${process.env.PUBLIC_URL}/data/health-symbols.json`);
     //     const tech = await fetch(`${process.env.PUBLIC_URL}/data/tech-symbols.json`);
@@ -49,6 +55,8 @@ export const dataService = {
 
     //     return healthSymbols.data.concat(techSymbols.data);
     // },
+
+    
     // getOneDaySymbol: async (symbol: any) => {
     //     const resp = await fetch(`${process.env.PUBLIC_URL}/data/symbols/${symbol}1D.json`);
     //     const data = await resp.json();
