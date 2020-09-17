@@ -24,7 +24,6 @@ import {
 
 import 'hammerjs';
 import styles from './stock.module.scss';
-import { dataService } from '../../services';
 import { useInternationalization } from '@progress/kendo-react-intl';
 
 const DEFAULT_RANGE = {
@@ -329,8 +328,8 @@ export const Stock = () => {
     }
 
     const fetchData = React.useCallback(async () => {
-        const newData = await dataService.getSymbol(symbol);
-        setData(newData)
+        // const newData = await dataService.getSymbol(symbol);
+        // setData(newData)
     }, [symbol])
 
     React.useEffect(() => { fetchData() }, [fetchData]);
