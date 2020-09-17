@@ -11,7 +11,6 @@ import { AddRemoveSymbol } from '../components/AddRemoveSymbol';
 import { StockList } from '../components/StockList';
 
 import styles from './stock-page.module.scss';
-import { ChangeSector } from '../components/SectorChange';
 
 export const StockPage = () => {
     return (
@@ -29,8 +28,7 @@ export const StockPage = () => {
                 <div className={classNames('py-3')} style={{ minHeight: 600 }}>
                     <div className={"container my-3"}>
                         <NavigationRow className="row justify-content-center">
-                            <AddRemoveSymbol className={"col-6 col-lg-4 mb-3 mb-lg-0 text-center text-lg-left"} />                            
-                            <ChangeSector className="col-6 col-lg-4 text-right" />
+                            <AddRemoveSymbol className={"col-6 col-lg-4 mb-3 mb-lg-0 text-center text-lg-left"} />
                         </NavigationRow>
                     </div>
                     <div className="container">
