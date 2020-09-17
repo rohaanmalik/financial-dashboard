@@ -54,8 +54,7 @@ export const AddRemoveSymbol = (props: AddRemoveSymbolProps) => {
 
     const fetchData = React.useCallback(
         async () => {
-            const newData = await dataService.getSectorSymbol(sector);
-            setAllSymbols(newData);
+            
         },
         [sector]
     );
