@@ -33,7 +33,7 @@ const processData = (data: any) => {
 export const dataService = {
     getSectorSymbol: async (sector: SECTOR) => {
         const sectorMap = {
-            [SECTOR.HEALTHCARE]: 'health-symbols',
+            [SECTOR.SP500]: 'health-symbols',
             [SECTOR.TECHNOLOGY]: 'tech-symbols',
         }
         const resp = await fetch(`${process.env.PUBLIC_URL}/data/${sectorMap[sector]}.json`);

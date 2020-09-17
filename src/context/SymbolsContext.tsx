@@ -12,7 +12,7 @@ export interface SymbolsContextType {
 export const SymbolsContext = React.createContext<SymbolsContextType>({
     selectedSymbols: [],
     symbols: {
-        [SECTOR.HEALTHCARE]: [],
+        [SECTOR.SP500]: [],
         [SECTOR.TECHNOLOGY]: []
     }
 })

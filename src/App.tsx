@@ -35,7 +35,7 @@ const Main = () => {
 const App: React.FunctionComponent<any> = () => {
   const selectedSymbols = React.useRef<string[]>(["SNAP"]);
   const [symbols, setSymbols] = React.useState<any>({
-    [SECTOR.HEALTHCARE]: ['SYK', "GILD", "DHR", "CVS", "BMY", "TMO", "SNY"],
+    [SECTOR.SP500]: ['SYK', "GILD", "DHR", "CVS", "BMY", "TMO", "SNY"],
     [SECTOR.TECHNOLOGY]: ['TWTR', 'AAPL', "MSFT", "SNAP", "NVDA", "CSCO"]
   })
   const [sector, setSector] = React.useState<SECTOR>(SECTOR.TECHNOLOGY);

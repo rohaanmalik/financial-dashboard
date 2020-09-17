@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export enum SECTOR {
-    HEALTHCARE,
+    SP500,
     TECHNOLOGY,
 }
 

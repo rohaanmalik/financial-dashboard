@@ -24,7 +24,7 @@ export const ChangeSector = (props: ChangeSectorProps) => {
     const { sector, onSectorChange } = React.useContext(SectorContext);
 
     const data = React.useMemo(() => [
-        { name: 'Healthcare', sector: SECTOR.HEALTHCARE },
+        { name: 'S&P500', sector: SECTOR.SP500 },
         { name: "Technology", sector: SECTOR.TECHNOLOGY }
     ], [])
 
