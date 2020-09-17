@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Chart, ChartSeries, ChartSeriesItem, ChartValueAxis, ChartValueAxisItem, ChartCategoryAxis, ChartCategoryAxisItem } from '@progress/kendo-react-charts';
-import { dataService } from '../../services';
+
 import { GridCellProps } from '@progress/kendo-react-grid';
 import styles from './stock-list.module.scss';
 
