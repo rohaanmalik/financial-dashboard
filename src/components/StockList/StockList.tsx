@@ -6,13 +6,15 @@ import { NumberCell } from './NumberCell';
 import { ChartCell } from './ChartCell';
 import { CheckboxCell } from './CheckboxCell';
 import { PriceHeaderCell } from './PriceHeaderCell';
-import { AvgVolumeHeaderCell } from './AvgVolumeHeaderCell';
-import { PERatioHeaderCell } from './PERatioHeaderCell';
+import { High } from './High';
+import { Low } from './Low';
 import { PriceCell } from './PriceCell';
 import styles from './stock-list.module.scss';
 import { SectorContext } from '../../context/SectorContext';
 import { SymbolsContext } from '../../context/SymbolsContext';
 import { Symbol } from '../Stock/Symbol';
+import { Open } from './Open';
+import { LatestTradingDay } from './LatestTradingDay';
 
 
 export const StockList: React.FunctionComponent = () => {
@@ -110,15 +112,15 @@ export const StockList: React.FunctionComponent = () => {
             >
                 <GridColumn field="selected" headerCell={_ => null} cell={CheckboxCell} width={40} />
                 <GridColumn field="symbol" title="Symbol" className={styles['symbol-cell']} width={70} locked={true} />
-                <GridColumn field="name" title="Name" className={styles['name-cell']} width={200} />
+                <GridColumn field="open" title="Open" headerCell={Open} width={80} />
+                <GridColumn field="high" title="High" headerCell={High} width={80} />
+                <GridColumn field="low" title="Low" headerCell={Low} width={80} />
                 <GridColumn field="price" title="Price" className={styles['price-cell']} cell={PriceCell} headerCell={PriceHeaderCell} width={80} />
+                <GridColumn field="volume" title="Volume" cell={NumberCell} width={100} />
+                <GridColumn field="latesttradingday" title="LatestTradingDay" headerCell={LatestTradingDay} width={100} />
                 <GridColumn field="day_change" title="Change" cell={ChangeCell} width={80} />
                 <GridColumn field="change_pct" title="% Change" cell={ChangeCell} width={80} />
-                <GridColumn field="volume" title="Volume" cell={NumberCell} width={80} />
-                <GridColumn field="volume_avg" title="Avg Vol" cell={NumberCell} headerCell={AvgVolumeHeaderCell} width={90} />
-                <GridColumn field="market_cap" title="Market Cap" cell={NumberCell} width={102} />
-                <GridColumn field="pe" title="PE Ratio (TTM)" headerCell={PERatioHeaderCell} width={80} />
-                <GridColumn cell={chartCell} title='1 Day Chart' width={200} />
+                <GridColumn field="prev_close" title="Prev Close" cell={ChangeCell} width={100} />
             </Grid>
         </>
     )
