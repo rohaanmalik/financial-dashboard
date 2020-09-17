@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Grid, GridColumn, GridSelectionChangeEvent, GridRowClickEvent } from '@progress/kendo-react-grid';
-import { dataService } from '../../services';
 import { useHistory, useParams } from "react-router-dom";
 import { ChangeCell } from './ChangeCell';
 import { NumberCell } from './NumberCell';
@@ -24,9 +23,8 @@ export const StockList: React.FunctionComponent = () => {
     const [data, setData] = React.useState<any[]>([]);
     const processed = React.useMemo(() => data.map((i: any) => ({ ...i, selected: selectedSymbols.current.some((s: any) => s === i.symbol) })), [symbol, selectedSymbols, data])
 
+
     const fetchData = React.useCallback(async () => {
-        const newData = await dataService.getSectorSymbol(sector);
-        setData(newData.filter((d: any) => symbols[sector].some((s: string) => s === d.symbol)))
     }, [setData, sector, symbols])
 
     const handleSelectionChange = React.useCallback(
